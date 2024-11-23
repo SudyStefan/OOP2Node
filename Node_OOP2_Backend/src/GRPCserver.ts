@@ -5,7 +5,7 @@ import fs from 'fs'
 import { Amenity } from "../../shared/models/Amenity";
 import { Road } from "../../shared/models/Roads";
 import { CRS } from "../../shared/models/CRS";
-import { EntityProto, CRSProto, AmenityGeometryProto, AmenityProto, CoordinateList, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
+import { CRSProto, AmenityGeometryProto, AmenityProto, CoordinateList, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
 
 function readJSON<T>(filePath: string, ctor: new (...args: any[]) => T): Map<number, T> {
   try {
@@ -35,7 +35,7 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
 });
 
 const amenityData = JSON.parse(fs.readFileSync("./data/amenities.json", 'utf-8'));
-const amenities = new Map<number, Amenity>(
+const amenitiesParsed = new Map<number, Amenity>(
   amenityData.map((item: any) => [
     item.id, 
     new Amenity(
@@ -51,7 +51,7 @@ const amenities = new Map<number, Amenity>(
 );
 
 const roadData = JSON.parse(fs.readFileSync("./data/roads.json", 'utf-8'));
-const roads = new Map<number, Road>(
+const roadsParsed = new Map<number, Road>(
   roadData.map((item: any) => [
     item.id, 
     new Road(
@@ -66,7 +66,7 @@ const roads = new Map<number, Road>(
   ])
 );
 
-Repository.initRepository(amenities, roads);
+Repository.initRepository(amenitiesParsed, roadsParsed);
 
 const mapServiceProt: any = grpc.loadPackageDefinition(packageDefinition).mapservice;
 
@@ -76,18 +76,36 @@ const amenityById = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUn
   if (amenity !== undefined) {
     callback(null, amenityToProto(amenity));
   } else {
-    callback({code: grpc.status.NOT_FOUND, message: `No amenity found with id: ${id}`});
+    callback({code: grpc.status.NOT_FOUND, message: `No amenity found with id: ${id}`}, null);
   }
 };
 
+const amenities = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
+  const amenitiesProto: AmenityProto[] = Array.from(Repository.getAmenities().entries()).map(([key, amenity]) => {
+    return amenityToProto(amenity);
+  });
+  callback(null, { amenities: amenitiesProto });
+}
+
 const roadById = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
   const { id } = call.request;
-  const road = Repository.getRoads().get(id);
-  callback(null, { road });
+  const road = Repository.getRoads().get(parseInt(id));
+  if (road !== undefined) {
+    callback(null, roadToProto(road));
+  } else {
+    callback({code: grpc.status.NOT_FOUND, message: `No road found with id: ${id}`}, null);
+  }
 };
 
+const roads = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
+  const roadsProto: RoadProto[] = Array.from(Repository.getRoads().entries()).map(([key, roads]) => {
+    return roadToProto(roads);
+  });
+  callback(null, { roads: roadsProto });
+}
+
 const server = new grpc.Server();
-server.addService(mapServiceProt.MapService.service, { amenityById, roadById });
+server.addService(mapServiceProt.MapService.service, { amenityById, roadById, amenities, roads });
 const adress = "localhost:8020";
 
 server.bindAsync(adress, grpc.ServerCredentials.createInsecure(), () => {
@@ -95,14 +113,6 @@ server.bindAsync(adress, grpc.ServerCredentials.createInsecure(), () => {
 });
 
 function amenityToProto(amenity: Amenity): AmenityProto {
-
-  const entityProto: EntityProto = {
-    name: amenity.name,
-    id: amenity.id,
-    tags: amenity.tags,
-    type: amenity.type
-  };
-
   const geomProto: AmenityGeometryProto = {
     type: amenity.geom.type,
     coordinates: amenity.geom.coordinates,
@@ -110,7 +120,10 @@ function amenityToProto(amenity: Amenity): AmenityProto {
   };
 
   const proto: AmenityProto = {
-    entity: entityProto,
+    name: amenity.name,
+    id: amenity.id,
+    tags: amenity.tags,
+    type: amenity.type,
     geom: geomProto
   }; 
 
@@ -118,13 +131,6 @@ function amenityToProto(amenity: Amenity): AmenityProto {
 }
 
 function roadToProto(road: Road): RoadProto {
-  const entityProto: EntityProto = {
-    name: road.name,
-    id: road.id,
-    tags: road.tags,
-    type: road.type
-  };
-  
   const coords: CoordinateList[] = road.geom.coordinates.map(inner => (
     { coordinates: inner }
   ));
@@ -136,7 +142,10 @@ function roadToProto(road: Road): RoadProto {
   };
   
   const proto: RoadProto = {
-    entity: entityProto,
+    name: road.name,
+    id: road.id,
+    tags: road.tags,
+    type: road.type,
     geom: geomProto
   }; 
 

@@ -1,0 +1,130 @@
+[
+  {
+    "name": "Casineum",
+    "id": 31625435,
+    "geom": {
+      "type": "Point",
+      "coordinates": [
+        15.4379613,
+        47.0699068
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "toilets:wheelchair": "yes",
+      "wheelchair": "yes",
+      "amenity": "theatre",
+      "name": "Casineum"
+    },
+    "type": "theatre"
+  },
+  {
+    "name": "Burgring Garage",
+    "id": 21261052,
+    "geom": {
+      "type": "Point",
+      "coordinates": [
+        15.4452594,
+        47.0708341
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "maxheight": "1.95",
+      "amenity": "parking_entrance",
+      "name": "Burgring Garage",
+      "vehicle": "yes"
+    },
+    "type": "parking_entrance"
+  },
+  {
+    "name": "Polizeiinspektion Schmiedgasse",
+    "id": 26899640,
+    "geom": {
+      "type": "Point",
+      "coordinates": [
+        15.4393231,
+        47.0686148
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "wheelchair": "yes",
+      "addr:housenumber": "26",
+      "phone": "+43 59133 6593 100",
+      "amenity": "police",
+      "addr:country": "AT",
+      "name": "Polizeiinspektion Schmiedgasse",
+      "addr:street": "Schmiedgasse",
+      "addr:postcode": "8010",
+      "addr:city": "Graz"
+    },
+    "type": "police"
+  },
+  {
+    "name": "",
+    "id": 289888353,
+    "geom": {
+      "type": "Point",
+      "coordinates": [
+        15.4429001,
+        47.0686097
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "collection_times": "Mo-Fr 17:00",
+      "amenity": "post_box",
+      "check_date:collection_times": "2022-04-13",
+      "addr:country": "AT",
+      "addr:street": "Hamerlinggasse",
+      "addr:postcode": "8010",
+      "operator": "Post",
+      "addr:city": "Graz"
+    },
+    "type": "post_box"
+  },
+  {
+    "name": "",
+    "id": 290161198,
+    "geom": {
+      "type": "Point",
+      "coordinates": [
+        15.4487617,
+        47.071778
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "amenity": "telephone",
+      "check_date": "2021-07-04",
+      "created_by": "Potlatch 0.10f"
+    },
+    "type": "telephone"
+  }
+]

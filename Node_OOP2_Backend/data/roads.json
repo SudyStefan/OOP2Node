@@ -1,0 +1,212 @@
+[
+  {
+    "name": "Harrachgasse",
+    "id": 3997985,
+    "geom": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          15.4452531,
+          47.0758469
+        ],
+        [
+          15.4453456,
+          47.0758901
+        ]
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "sidewalk": "both",
+      "cycleway:both": "no",
+      "surface": "asphalt",
+      "lit": "yes",
+      "oneway:bicycle": "yes",
+      "maxspeed": "30",
+      "name": "Harrachgasse",
+      "highway": "residential",
+      "name:etymology:wikidata": "Q689050",
+      "wikidata": "Q106635499",
+      "oneway": "yes"
+    },
+    "type": "residential",
+    "child_ids": [
+      332085686,
+      2921786347
+    ]
+  },
+  {
+    "name": "Halbärthgasse",
+    "id": 3997987,
+    "geom": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          15.4501904,
+          47.0761661
+        ],
+        [
+          15.449979,
+          47.0763601
+        ]
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "sidewalk": "both",
+      "cycleway:both": "no",
+      "surface": "asphalt",
+      "lit": "yes",
+      "maxspeed": "20",
+      "name": "Halbärthgasse",
+      "highway": "residential",
+      "wikidata": "Q106635496",
+      "name:etymology": "Josef Halbärth (1762-1846)",
+      "name:start_date": "1844"
+    },
+    "type": "residential",
+    "child_ids": [
+      20929609,
+      1392830660
+    ]
+  },
+  {
+    "name": "Alberstraße",
+    "id": 4014537,
+    "geom": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          15.4514959,
+          47.0700555
+        ],
+        [
+          15.4524184,
+          47.0697512
+        ],
+        [
+          15.4524811,
+          47.0697243
+        ]
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "sidewalk": "both",
+      "surface": "asphalt",
+      "lit": "yes",
+      "maxspeed": "30",
+      "name": "Alberstraße",
+      "highway": "residential",
+      "name:etymology:wikidata": "Q106339916",
+      "wikidata": "Q106635435",
+      "name:etymology": "Albin Alber",
+      "name:start_date": "1860"
+    },
+    "type": "residential",
+    "child_ids": [
+      1253038341,
+      9607338715,
+      21271819
+    ]
+  },
+  {
+    "name": "Bürgergasse",
+    "id": 4014547,
+    "geom": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          15.4429019,
+          47.0699889
+        ],
+        [
+          15.4427947,
+          47.0701495
+        ]
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "bicycle": "yes",
+      "surface": "asphalt",
+      "lit": "yes",
+      "name": "Bürgergasse",
+      "highway": "pedestrian",
+      "wikidata": "Q106635458",
+      "name:start_date": "1785"
+    },
+    "type": "pedestrian",
+    "child_ids": [
+      21298455,
+      449291553
+    ]
+  },
+  {
+    "name": "Rittergasse",
+    "id": 4399899,
+    "geom": {
+      "type": "LineString",
+      "coordinates": [
+        [
+          15.4464399,
+          47.0754936
+        ],
+        [
+          15.445841,
+          47.0753454
+        ],
+        [
+          15.4458303,
+          47.0753427
+        ],
+        [
+          15.4457195,
+          47.0753152
+        ]
+      ],
+      "crs": {
+        "type": "name",
+        "properties": {
+          "name": "EPSG:0"
+        }
+      }
+    },
+    "tags": {
+      "note": "blaue tafel -> cycleway",
+      "bicycle": "designated",
+      "surface": "cobblestone",
+      "name": "Rittergasse",
+      "highway": "cycleway",
+      "foot": "designated",
+      "segregated": "no"
+    },
+    "type": "cycleway",
+    "child_ids": [
+      26899084,
+      3871899917,
+      3871899916,
+      20929488
+    ]
+  }
+]

@@ -1,0 +1,68 @@
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+package mapservice;
+option java_package = "at.tugraz.oop2";
+option java_multiple_files = true;
+option java_outer_classname = "MapServiceProto";
+option java_generic_services = true;
+
+message CRSProto {
+  string type = 1;
+  map<string, string> properties = 2;
+}
+
+message AmenityGeometryProto {
+  string type = 1;
+  repeated double coordinates = 2;
+  CRSProto crs = 3;
+}
+
+message AmenityProto{
+  string name = 1;
+  int64 id = 2;
+  map<string, string> tags = 3;
+  string type = 4;
+  AmenityGeometryProto geom = 5;
+}
+
+message RoadGeometryProto {
+  string type = 1;
+  message CoordinateList {
+    repeated double coordinates = 1;
+  }
+
+  repeated CoordinateList coordinates = 2;
+  CRSProto crs = 3;
+}
+
+message RoadProto{
+  string name = 1;
+  int64 id = 2;
+  map<string, string> tags = 3;
+  string type = 4;
+  RoadGeometryProto geom = 5;
+}
+
+message AmenityById{
+  int64 id = 1;
+}
+
+message RoadById{
+  int64 id = 1;
+}
+
+message AmenityList {
+  repeated AmenityProto amenities = 1;
+}
+
+message RoadList {
+  repeated RoadProto roads = 1;
+}
+
+
+service MapService{
+  rpc amenities(google.protobuf.Empty) returns (AmenityList){};
+  rpc roads(google.protobuf.Empty) returns (RoadList){};
+  rpc amenityById(AmenityById) returns (AmenityProto){};
+  rpc roadById(RoadById) returns (RoadProto){};
+}

@@ -5,25 +5,11 @@ import fs from 'fs'
 import { Amenity } from "../../shared/models/Amenity";
 import { Road } from "../../shared/models/Roads";
 import { CRS } from "../../shared/models/CRS";
-import { CRSProto, AmenityGeometryProto, AmenityProto, CoordinateList, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
+import { AmenityGeometryProto, AmenityProto, CoordinateList, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
+import { readOSM } from "./osmParser";
 
-function readJSON<T>(filePath: string, ctor: new (...args: any[]) => T): Map<number, T> {
-  try {
-    const data = fs.readFileSync(filePath, 'utf-8');
-    const parseData = JSON.parse(data);
-
-    const map = new Map<number, T>(
-      parseData.map((item: any) => {
-        item.id,
-        new ctor(item.name, item.id, item.tags, item.type, item.geom.type, item.geom.coordinates, new CRS(item.geom.crs.type, item.geom.crs.properties));
-      })
-    );
-    return map;
-  } catch (error) {
-    console.log(error);
-    return new Map();
-  }
-}
+const filePath = './data/styria_reduced.osm';
+readOSM(filePath);
 
 const PROTO_PATH = "./../shared/proto/mapservice.proto";
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
@@ -33,40 +19,6 @@ const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   defaults: true,
   oneofs: true
 });
-
-const amenityData = JSON.parse(fs.readFileSync("./data/amenities.json", 'utf-8'));
-const amenitiesParsed = new Map<number, Amenity>(
-  amenityData.map((item: any) => [
-    item.id, 
-    new Amenity(
-      item.name, 
-      item.id, 
-      item.tags, 
-      item.type, 
-      item.geom.type, 
-      item.geom.coordinates, 
-      new CRS(item.geom.crs.type, item.geom.crs.properties)
-    )
-  ])
-);
-
-const roadData = JSON.parse(fs.readFileSync("./data/roads.json", 'utf-8'));
-const roadsParsed = new Map<number, Road>(
-  roadData.map((item: any) => [
-    item.id, 
-    new Road(
-      item.name, 
-      item.id, 
-      item.tags, 
-      item.type, 
-      item.geom.type, 
-      item.geom.coordinates, 
-      new CRS(item.geom.crs.type, item.geom.crs.properties)
-    )
-  ])
-);
-
-Repository.initRepository(amenitiesParsed, roadsParsed);
 
 const mapServiceProt: any = grpc.loadPackageDefinition(packageDefinition).mapservice;
 
@@ -90,6 +42,7 @@ const amenities = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnar
 const roadById = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
   const { id } = call.request;
   const road = Repository.getRoads().get(parseInt(id));
+  console.log(road);
   if (road !== undefined) {
     callback(null, roadToProto(road));
   } else {

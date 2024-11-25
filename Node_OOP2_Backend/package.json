@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "dependencies": {
+    "@grpc/grpc-js": "^1.12.2",
     "acorn": "^8.14.0",
     "acorn-walk": "^8.3.4",
     "ansi-regex": "^5.0.1",
@@ -23,6 +24,7 @@
     "diff": "^4.0.2",
     "emoji-regex": "^8.0.0",
     "escalade": "^3.2.0",
+    "fast-xml-parser": "^4.5.0",
     "fill-range": "^7.1.1",
     "get-caller-file": "^2.0.5",
     "glob-parent": "^5.1.2",
@@ -63,7 +65,6 @@
     "yargs-parser": "^21.1.1",
     "yn": "^3.1.1"
   },
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "nodemon ./src/GRPCserver.ts"

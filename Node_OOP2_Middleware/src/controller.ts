@@ -31,6 +31,7 @@ export const getRoadById = (req: Request, res: Response): void => {
     if (error) {
       console.log(error);
     } else {
+      response.geom.coordinates = response.geom.coordinates.map((coords:any) => coords.coordinates);
       res.send(response)
     }
   })

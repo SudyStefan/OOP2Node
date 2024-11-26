@@ -41,6 +41,7 @@ message RoadProto{
   map<string, string> tags = 3;
   string type = 4;
   RoadGeometryProto geom = 5;
+  repeated int64 child_ids = 6;
 }
 
 message AmenityById{

@@ -3,7 +3,7 @@ import * as grpc from '@grpc/grpc-js';
 
 const packageDefinition = protoLoader.loadSync('./../shared/proto/mapservice.proto', {
   keepCase: true,
-  longs: String,
+  longs: Number,
   enums: String,
   defaults: true,
   oneofs: true

@@ -5,7 +5,7 @@ import router from "./controller";
 
 
 const app: Application = express();
-const PORT = 8011;
+const PORT = 8010;
 
 app.use('/', router);
 app.use(cors());

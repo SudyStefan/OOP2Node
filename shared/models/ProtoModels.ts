@@ -1,6 +1,6 @@
 export interface CRSProto {
   type: string;
-  properties: Map<string, string>;
+  properties: Object;
 }
 
 export interface AmenityGeometryProto {
@@ -12,7 +12,7 @@ export interface AmenityGeometryProto {
 export interface AmenityProto {
   name: string;
   id: number;
-  tags: Map<string, string>;
+  tags: Object;
   type: string;
   geom: AmenityGeometryProto;
 }
@@ -22,7 +22,7 @@ export interface CoordinateList {
 }
 
 export interface RoadGeometryProto {
-  type: string,
+  type: string;
   coordinates: CoordinateList[];
   crs: CRSProto;
 }
@@ -30,7 +30,8 @@ export interface RoadGeometryProto {
 export interface RoadProto {
   name: string;
   id: number;
-  tags: Map<string, string>;
+  tags: Object;
   type: string;
   geom: RoadGeometryProto;
+  child_ids: number[];
 }

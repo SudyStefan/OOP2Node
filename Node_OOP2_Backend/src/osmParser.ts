@@ -47,7 +47,9 @@ function processNodes(nodes: any): Map<number, Amenity> {
 function processWays(ways: any, amenities: Map<number, Amenity>): Map<number, Road> {
   const roads: Map<number, Road> = new Map<number, Road>(ways.map((way: any) => {
     let tags: Map<string, string>;
+    let child_ids: number[] = [];
     const coordinates: number[][] = way.nd.map((nd: any) => {
+      child_ids.push(parseInt(nd.ref));
       return amenities.get(parseInt(nd.ref))?.geom.coordinates ?? [];
     });
     if (way.tag) {
@@ -59,9 +61,10 @@ function processWays(ways: any, amenities: Map<number, Amenity>): Map<number, Ro
       const name = tags.get('name') ?? "";
       const type = tags.get('highway') ?? "";
 
-      return [parseInt(way.id), new Road(name, parseInt(way.id), tags, type, "LineString", coordinates, crs)];
+
+      return [parseInt(way.id), new Road(name, parseInt(way.id), tags, type, "LineString", coordinates, crs, child_ids)];
     } else {
-      return [parseInt(way.id), new Road("", parseInt(way.id), new Map<string, string>(), "", "LineString", coordinates, crs)];
+      return [parseInt(way.id), new Road("", parseInt(way.id), new Map<string, string>(), "", "LineString", coordinates, crs, child_ids)];
     }
   })); 
 

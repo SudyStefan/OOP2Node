@@ -5,7 +5,7 @@ import fs from 'fs'
 import { Amenity } from "../../shared/models/Amenity";
 import { Road } from "../../shared/models/Roads";
 import { CRS } from "../../shared/models/CRS";
-import { AmenityGeometryProto, AmenityProto, CoordinateList, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
+import { AmenityGeometryProto, AmenityProto, CoordinateList, CRSProto, RoadGeometryProto, RoadProto } from "../../shared/models/ProtoModels";
 import { readOSM } from "./osmParser";
 
 const filePath = './data/styria_reduced.osm';
@@ -14,7 +14,7 @@ readOSM(filePath);
 const PROTO_PATH = "./../shared/proto/mapservice.proto";
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {
   keepCase: true,
-  longs: String,
+  longs: Number,
   enums: String,
   defaults: true,
   oneofs: true
@@ -66,16 +66,21 @@ server.bindAsync(adress, grpc.ServerCredentials.createInsecure(), () => {
 });
 
 function amenityToProto(amenity: Amenity): AmenityProto {
+  const crsProto: CRSProto = {
+    type: amenity.geom.crs.type,
+    properties: Object.fromEntries(amenity.geom.crs.properties)
+  };
+
   const geomProto: AmenityGeometryProto = {
     type: amenity.geom.type,
     coordinates: amenity.geom.coordinates,
-    crs: amenity.geom.crs
+    crs: crsProto
   };
 
   const proto: AmenityProto = {
     name: amenity.name,
     id: amenity.id,
-    tags: amenity.tags,
+    tags: Object.fromEntries(amenity.tags),
     type: amenity.type,
     geom: geomProto
   }; 
@@ -88,19 +93,26 @@ function roadToProto(road: Road): RoadProto {
     { coordinates: inner }
   ));
 
+  const crsProto: CRSProto = {
+    type: road.geom.crs.type,
+    properties: Object.fromEntries(road.geom.crs.properties)
+  };
+
   const geomProto: RoadGeometryProto = {
     type: road.geom.type,
     coordinates: coords,
-    crs: road.geom.crs
+    crs: crsProto
   };
-  
+
   const proto: RoadProto = {
     name: road.name,
     id: road.id,
-    tags: road.tags,
+    tags: Object.fromEntries(road.tags),
     type: road.type,
-    geom: geomProto
+    geom: geomProto,
+    child_ids: road.child_ids
   }; 
 
+  console.log(proto);
   return proto;
 }

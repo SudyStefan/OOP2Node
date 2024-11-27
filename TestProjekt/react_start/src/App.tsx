@@ -3,56 +3,81 @@ import logo from './logo.svg';
 import './App.css';
 import { useState } from 'react';
 import axios from 'axios';
+import { stringify } from 'querystring';
 
-interface Fact {
-  text: string;
+
+interface Geom {
+  type: string,
+  coordinates: number[];
+}
+
+interface Amenity {
+  name: string;
   type: string;
+  geom: Geom;
+  tags: Map<string, string>;
 }
 
 
-function MyButton(props: { onClick: () => void}) {
+function Button(props: { onClick: () => void, text: string}): JSX.Element {
   return (
     <button onClick={props.onClick}>
-      Get cat fact
+      {props.text}
       </button>
   );
 }
 
-function FactList({ list }: { list: Fact[]}) {
+function EntryField({ inputValue, isValid, handleInputChange }: { inputValue: string, isValid: boolean, handleInputChange: (e: React.ChangeEvent<HTMLInputElement>) => void }): JSX.Element {
   return (
-    <ul>
-      {list.map((item, index) => (
-        <li key={index}>{item.text}</li>
-      ))}
-    </ul>
-  )
+    <div>
+      <input 
+        type="text"
+        value={inputValue}
+        onChange={handleInputChange}
+        placeholder='Enter the ID to search'
+      />
+      {!isValid && <p>Please enter a valid integer!</p>}
+    </div>
+  );
 }
 
-function App() {
+function formatAmenity(obj: Amenity): string {
+  const { name, geom, type, tags} = obj;
+  return `name: '${name}', type: '${type}', [lon: ${geom.coordinates[0]} | lat: ${geom.coordinates[1]}], ${tags}`;
+}
+
+function App(): JSX.Element {
   const [showList, setShowList] = useState(false);
-  const [facts, setFacts] = useState<any[]>([]);
+  const [inputId, setInputId] = useState<string>('');
+  const [isValid, setIsValid] = useState<boolean>(true);
+  const [responseData, setResponseData] = useState<Amenity>();
 
-
-  const getCatFact = async () => {
-    setShowList(false);
-    //axios.get("https://cat-fact.herokuapp.com/facts")
-    axios.get("http://localhost:8010/animal")
-      .then((res) => {
-        setFacts(res.data);
-        console.log(res.data);
-      }).catch((err) => {
-        console.log(err);
-      }).finally(() => {
-        console.log("Fact received");
-        setShowList(true);
-      });
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    if (parseInt(value)) {
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+    setInputId(value);
   };
+
+  const getAmenityById = (id: number) => {
+    axios.get(`http://localhost:8010/amenities/${id}`, { withCredentials: false })
+      .then((res) => {
+        console.log(res.data);
+        setResponseData(res.data);
+      }).catch((err) => {
+        console.log(err)
+      });
+  }
 
   return (
     <div className="App">
       <header className="App-header">
-        <MyButton onClick={getCatFact} />
-        {showList ? <FactList list={facts}/> : <img src={logo} className="App-logo" alt="logo" />}
+        <EntryField inputValue={inputId} isValid={isValid} handleInputChange={handleInputChange} />
+        <Button onClick={() => getAmenityById(parseInt(inputId))} text={`Get Amenity with ID: ${inputId}`}/>
+        {responseData ? <p>{formatAmenity(responseData)}</p> : <img src={logo} className="App-logo" alt="logo" />}
       </header>
     </div>
   );

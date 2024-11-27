@@ -75,6 +75,10 @@ message BBox {
   optional float bbox_br_y = 5;
 }
 
+message Paging {
+  int32 page = 1;
+}
+
 message GetAmenities {
   optional string amenity = 1;
   optional BBox bbox = 2;

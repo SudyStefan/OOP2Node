@@ -7,8 +7,8 @@ import router from "./controller";
 const app: Application = express();
 const PORT = 8010;
 
-app.use('/', router);
 app.use(cors());
+app.use('/', router);
 app.use(bodyParser.json());
 
 app.listen(PORT, () => {

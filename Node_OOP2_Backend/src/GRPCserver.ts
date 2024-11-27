@@ -42,7 +42,6 @@ const amenities = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnar
 const roadById = (call: grpc.ServerUnaryCall<any, any>, callback: grpc.sendUnaryData<any>) => {
   const { id } = call.request;
   const road = Repository.getRoads().get(parseInt(id));
-  console.log(road);
   if (road !== undefined) {
     callback(null, roadToProto(road));
   } else {
@@ -113,6 +112,5 @@ function roadToProto(road: Road): RoadProto {
     child_ids: road.child_ids
   }; 
 
-  console.log(proto);
   return proto;
 }

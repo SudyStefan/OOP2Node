@@ -35,9 +35,9 @@ function processNodes(nodes: any): Map<number, Amenity> {
       }
       const name = tags.get('name') ?? "";
       const type = tags.get('amenity') ?? "";
-      return [parseInt(node.id), new Amenity(name, parseInt(node.id), tags, type, "Point", [parseFloat(node.lat), parseFloat(node.lon)], crs)];
+      return [parseInt(node.id), new Amenity(name, parseInt(node.id), tags, type, "Point", [parseFloat(node.lon), parseFloat(node.lat)], crs)];
     } else {
-      return [parseInt(node.id), new Amenity("", parseInt(node.id), new Map<string, string>(), "", "Point", [parseFloat(node.lat), parseFloat(node.lon)], crs)];
+      return [parseInt(node.id), new Amenity("", parseInt(node.id), new Map<string, string>(), "", "Point", [parseFloat(node.lon), parseFloat(node.lat)], crs)];
     }
   })); 
 

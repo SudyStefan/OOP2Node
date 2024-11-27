@@ -54,16 +54,43 @@ message RoadById{
 
 message AmenityList {
   repeated AmenityProto amenities = 1;
+  Paging paging = 2;
 }
 
 message RoadList {
   repeated RoadProto roads = 1;
+  Paging paging = 2;
 }
 
+message Point {
+  optional float point_x = 1;
+  optional float point_y = 2;
+  optional float point_d = 3;
+}
+
+message BBox {
+  optional float bbox_tl_x = 2;
+  optional float bbox_tl_y = 3;
+  optional float bbox_br_x = 4;
+  optional float bbox_br_y = 5;
+}
+
+message GetAmenities {
+  optional string amenity = 1;
+  optional BBox bbox = 2;
+  optional Point point = 3;
+  optional Paging paging = 4;
+}
+
+message GetRoads {
+  optional string road = 1;
+  BBox bbox = 2;
+  optional Paging paging = 3;
+}
 
 service MapService{
-  rpc amenities(google.protobuf.Empty) returns (AmenityList){};
-  rpc roads(google.protobuf.Empty) returns (RoadList){};
+  rpc amenities(GetAmenities) returns (AmenityList){};
+  rpc roads(GetRoads) returns (RoadList){};
   rpc amenityById(AmenityById) returns (AmenityProto){};
   rpc roadById(RoadById) returns (RoadProto){};
 }
